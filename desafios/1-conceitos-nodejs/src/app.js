@@ -26,7 +26,7 @@ app.post("/repositories", (request, response) => {
 
 app.put("/repositories/:id", (request, response) => {
   const { id } = request.params
-  const { title, url, techs } = request.body
+  const { title, url, techs, likes } = request.body
 
   const repositoryIndex = repositories.findIndex(repository => repository.id === id)
 
@@ -35,9 +35,11 @@ app.put("/repositories/:id", (request, response) => {
   }
 
   repository = {
+    id,
     title,
     url,
-    techs
+    techs,
+    likes
   }
 
   repositories[repositoryIndex] = repository
