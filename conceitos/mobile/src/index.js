@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react'
-import {SafeAreaView, FlatList, Text, StyleSheet, StatusBar} from 'react-native'
+import {
+  SafeAreaView, 
+  FlatList, 
+  Text, 
+  StyleSheet, 
+  StatusBar, 
+  TouchableOpacity
+} from 'react-native'
 
 import api from './services/api'
 
@@ -12,6 +19,15 @@ export default function App() {
       setProjects(response.data)
     })
   }, [])
+
+  async function handleAddProject() {
+    const response = await api.post('projects', { 
+      title: `Novo Projeto ${Date.now()}`,
+      owner: 'Diogo Martins'
+    })
+
+    setProjects([...projects, response.data])
+  }
 
   return (
     <>
@@ -27,6 +43,14 @@ export default function App() {
             </Text>
           )}
         />
+
+        <TouchableOpacity 
+          activeOpacity={0.8} 
+          style={styles.button} 
+          onPress={handleAddProject}
+        >
+          <Text style={styles.buttonText}>Adicionar Projeto</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     </>
   )
@@ -41,4 +65,16 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 24
   },
+  button: {
+    backgroundColor: '#fff',
+    margin: 20,
+    height: 50,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+  }
 })
