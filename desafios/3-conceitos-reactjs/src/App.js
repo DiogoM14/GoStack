@@ -25,9 +25,14 @@ function App() {
   async function handleRemoveRepository(id) {
     await api.delete(`repositories/${id}`)
 
-    const filterRepositories = repositories.filter(repository => repository.id !== id)
+    const filteredRepositories = repositories.filter(repository => repository.id !== id)
 
-    setRepositories(filterRepositories)
+    setRepositories(filteredRepositories)
+  }
+
+  async function handleLikeRepository(id) {
+    await api.post(`repositories/${id}/like`)
+
   }
 
   return (
@@ -37,9 +42,10 @@ function App() {
       <ul data-testid="repository-list">
         <li>
           {repositories.map(repository => <div key={repository.id}>
-            {repository.title}
+              {repository.title} <p /> {repository.techs} <p /> {repository.likes} curtidas
             
-            <button onClick={() => handleRemoveRepository(repository.id)}>Remover</button>
+              <button onClick={() => handleRemoveRepository(repository.id)}>Remover</button>
+              <button onClick={() => handleLikeRepository(repository.id)}>Curtir</button>
             </div>)}
         </li>
       </ul>
@@ -47,5 +53,5 @@ function App() {
     </div>
   );
 }
-
+  
 export default App;
