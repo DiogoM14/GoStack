@@ -1,6 +1,12 @@
 import TransactionsRepository from '../repositories/TransactionsRepository'
 import Transaction from '../models/Transaction'
 
+interface Balance {
+  income: number
+  outcome: number
+  total: number
+}
+
 interface Request {
   title: string
   value: number
@@ -15,6 +21,14 @@ class CreateTransactionService {
   }
 
   public execute({ title, value, type }: Request): Transaction {
+    type === 'income' ? total + value : total - value
+
+    const balance = this.transactionsRepository.getBalance({
+      income,
+      outcome,
+      total
+    })
+
     const transaction = this.transactionsRepository.create({
       title,
       value,
