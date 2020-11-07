@@ -21,13 +21,11 @@ class CreateTransactionService {
   }
 
   public execute({ title, value, type }: Request): Transaction {
-    type === 'income' ? total + value : total - value
+    const { total } = this.transactionsRepository.getBalance()
 
-    const balance = this.transactionsRepository.getBalance({
-      income,
-      outcome,
-      total
-    })
+    if (type === 'outcome' && total < value) {
+      throw Error('Unable to transaction')
+    }
 
     const transaction = this.transactionsRepository.create({
       title,
